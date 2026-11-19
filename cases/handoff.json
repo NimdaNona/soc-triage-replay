@@ -1,0 +1,60 @@
+{
+  "synthetic": true,
+  "alert": {
+    "id": "DEMO-3",
+    "rule": "ID-07",
+    "event": "E303"
+  },
+  "events": [
+    {
+      "id": "E301",
+      "time": "2026-02-03T09:05:00Z",
+      "actor": "user-oak",
+      "kind": "reset",
+      "source": "helpdesk"
+    },
+    {
+      "id": "E302",
+      "time": "2026-02-03T09:08:00Z",
+      "actor": "user-oak",
+      "kind": "enrollment",
+      "source": "identity",
+      "factor": "F3"
+    },
+    {
+      "id": "E303",
+      "time": "2026-02-03T09:10:00Z",
+      "actor": "user-oak",
+      "kind": "signin",
+      "source": "identity",
+      "session": "S3",
+      "factor": "F3"
+    },
+    {
+      "id": "E304",
+      "time": "2026-02-03T09:12:00Z",
+      "actor": "user-oak",
+      "kind": "remote_access",
+      "source": "endpoint",
+      "session": "S-other"
+    },
+    {
+      "id": "E305",
+      "time": "2026-02-03T09:20:00Z",
+      "actor": "user-oak",
+      "kind": "denial",
+      "source": "callback",
+      "verified": true,
+      "session": "S3"
+    },
+    {
+      "id": "E306",
+      "time": "2026-02-03T09:22:00Z",
+      "actor": "user-oak",
+      "kind": "confirmation",
+      "source": "callback",
+      "verified": true,
+      "session": "S3"
+    }
+  ]
+}

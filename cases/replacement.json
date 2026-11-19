@@ -1,0 +1,61 @@
+{
+  "synthetic": true,
+  "alert": {
+    "id": "DEMO-2",
+    "rule": "ID-07",
+    "event": "E204"
+  },
+  "events": [
+    {
+      "id": "E201",
+      "time": "2026-02-02T09:01:00Z",
+      "actor": "user-elm",
+      "kind": "change",
+      "source": "change_control",
+      "approved": true,
+      "session": "S2",
+      "factor": "F2"
+    },
+    {
+      "id": "E202",
+      "time": "2026-02-02T09:05:00Z",
+      "actor": "user-elm",
+      "kind": "reset",
+      "source": "helpdesk"
+    },
+    {
+      "id": "E203",
+      "time": "2026-02-02T09:08:00Z",
+      "actor": "user-elm",
+      "kind": "enrollment",
+      "source": "identity",
+      "factor": "F2"
+    },
+    {
+      "id": "E204",
+      "time": "2026-02-02T09:10:00Z",
+      "actor": "user-elm",
+      "kind": "signin",
+      "source": "identity",
+      "session": "S2",
+      "factor": "F2"
+    },
+    {
+      "id": "E205",
+      "time": "2026-02-02T09:12:00Z",
+      "actor": "user-elm",
+      "kind": "remote_access",
+      "source": "endpoint",
+      "session": "S2"
+    },
+    {
+      "id": "E206",
+      "time": "2026-02-02T09:20:00Z",
+      "actor": "user-elm",
+      "kind": "confirmation",
+      "source": "callback",
+      "verified": true,
+      "session": "S2"
+    }
+  ]
+}
