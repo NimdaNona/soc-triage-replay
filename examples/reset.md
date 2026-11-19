@@ -23,7 +23,7 @@ Assessment **corroborated**
 | E101 | 2026-02-01T09:05:00Z | helpdesk | actor=user-ash, kind=reset |
 | E102 | 2026-02-01T09:08:00Z | identity | actor=user-ash, factor=F1, kind=enrollment |
 | E103 | 2026-02-01T09:10:00Z | identity | actor=user-ash, factor=F1, kind=signin, session=S1 |
-| E104 | 2026-02-01T09:12:00Z | endpoint | actor=user-ash, kind=remote_access, session=S1 |
+| E104 | 2026-02-01T09:12:00Z | endpoint | actor=user-ash, kind=remote&#95;access, session=S1 |
 | E105 | 2026-02-01T09:20:00Z | callback | actor=user-ash, kind=denial, session=S1, verified=True |
 
 ## Analyst handoff

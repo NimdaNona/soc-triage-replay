@@ -1,7 +1,8 @@
 """Offline, deterministic investigation of a single synthetic sign-in alert."""
 import argparse
 import json
-from datetime import datetime, timedelta
+import string
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 RULE = "ID-07"
@@ -29,11 +30,15 @@ def investigate(case):
         raise ValueError("Duplicate evidence ID")
     if alert["rule"] != RULE:
         raise ValueError("Unsupported detection")
-    if any(e["source"] != SOURCES.get(e["kind"], "") for e in events):
+    if any(e["kind"] not in SOURCES or e["source"] != SOURCES[e["kind"]] for e in events):
         raise ValueError("Unexpected source for event kind")
     anchor = index.get(alert["event"])
     if not anchor or anchor["kind"] != "signin":
         raise ValueError("Alert needs a sign-in anchor")
+    for field in ("actor", "session", "factor"):
+        value = anchor.get(field)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"Sign-in anchor needs a nonblank {field}")
     at = timestamp(anchor["time"])
     trace = []
 
@@ -73,20 +78,28 @@ def investigate(case):
             "analyst_decision": "PENDING"}
 
 
+def cell(value):
+    # Entity-encode punctuation before Markdown parsing. A value stays in one cell
+    # even when it contains markup, an HTML tag, a table pipe, or a newline.
+    return "".join(f"&#{ord(c)};" if (c in string.punctuation and c != "-") or not c.isprintable() else c
+                   for c in str(value))
+
+
 def workbook(case, result):
-    lines = [f"# Investigation workbook · {result['alert']}", "", "Synthetic training evidence.", "",
-             f"Detection **{RULE}** · sign-in anchor **{result['anchor']}**",
+    lines = [f"# Investigation workbook · {cell(result['alert'])}", "", "Synthetic training evidence.", "",
+             f"Detection **{RULE}** · sign-in anchor **{cell(result['anchor'])}**",
              f"\nAssessment **{result['disposition']}**", "", "## Evidence checks", "",
              "| Check | Result | Evidence IDs |", "|---|---|---|"]
     for row in result["trace"]:
         lines.append(f"| {row['check']} | {'Observed' if row['matched'] else 'Unsubstantiated'} | "
-                     + (", ".join(row["evidence"]) or "—") + " |")
+                     + (", ".join(map(cell, row["evidence"])) or "—") + " |")
     lines.extend(["", "## Event record", "", "| ID | UTC time | Source | Observation |",
                   "|---|---|---|---|"])
     for e in sorted(case["events"], key=lambda event: timestamp(event["time"])):
-        observation = ", ".join(f"{k}={v}" for k, v in sorted(e.items())
+        observation = ", ".join(f"{cell(k)}={cell(v)}" for k, v in sorted(e.items())
                                 if k not in {"id", "source", "time"})
-        lines.append(f"| {e['id']} | {e['time']} | {e['source']} | {observation} |")
+        utc = timestamp(e["time"]).astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+        lines.append(f"| {cell(e['id'])} | {utc} | {cell(e['source'])} | {observation} |")
     lines.extend(["", "## Analyst handoff", "", result["recommendation"], "",
                   "**Analyst decision: PENDING.** No action has been taken.", ""])
     return "\n".join(lines)
@@ -98,6 +111,6 @@ if __name__ == "__main__":
                         default=Path(__file__).parent / "cases" / "reset.json")
     parser.add_argument("--json", action="store_true", help="print the machine-readable trace")
     args = parser.parse_args()
-    data = json.loads(args.case.read_text())
+    data = json.loads(args.case.read_text(encoding="utf-8"))
     result = investigate(data)
     print(json.dumps(result, indent=2) if args.json else workbook(data, result), end="\n" if args.json else "")

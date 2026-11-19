@@ -23,7 +23,7 @@ Assessment **insufficient**
 | E301 | 2026-02-03T09:05:00Z | helpdesk | actor=user-oak, kind=reset |
 | E302 | 2026-02-03T09:08:00Z | identity | actor=user-oak, factor=F3, kind=enrollment |
 | E303 | 2026-02-03T09:10:00Z | identity | actor=user-oak, factor=F3, kind=signin, session=S3 |
-| E304 | 2026-02-03T09:12:00Z | endpoint | actor=user-oak, kind=remote_access, session=S-other |
+| E304 | 2026-02-03T09:12:00Z | endpoint | actor=user-oak, kind=remote&#95;access, session=S-other |
 | E305 | 2026-02-03T09:20:00Z | callback | actor=user-oak, kind=denial, session=S3, verified=True |
 | E306 | 2026-02-03T09:22:00Z | callback | actor=user-oak, kind=confirmation, session=S3, verified=True |
 

@@ -1,0 +1,12 @@
+{
+  "disposition": "corroborated",
+  "analyst_decision": "PENDING",
+  "action_taken": false,
+  "checks": {
+    "trigger": ["E101", "E102", "E103"],
+    "endpoint": ["E104"],
+    "denial": ["E105"],
+    "confirmation": [],
+    "approval": []
+  }
+}

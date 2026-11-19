@@ -55,3 +55,13 @@ python3 replay.py cases/reset.json > examples/reset.md
 ```
 
 This runner consumes the normalized fixture schema. Raw log parsing, source authentication, identity resolution across vendors, and interactive analyst decisions are outside its scope.
+
+## Evaluate a candidate answer
+
+Give an analyst or model the [task and output schema](TASK.md) plus one source fixture. Save its JSON answer and score it locally. A [worked candidate](examples/candidate.json) for the reset case earns `7/7 checks passed`:
+
+```sh
+python3 score.py cases/reset.json examples/candidate.json
+```
+
+The command reports missing, unknown and misattributed citations per check. Exit codes are 0 for a full pass, 1 for a scored mismatch, and 2 for invalid input. No model call is made.

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def load(name="reset"):
-    return json.loads((ROOT / "cases" / (name + ".json")).read_text())
+    return json.loads((ROOT / "cases" / (name + ".json")).read_text(encoding="utf-8"))
 
 
 class ReplayTests(unittest.TestCase):
@@ -21,7 +21,7 @@ class ReplayTests(unittest.TestCase):
                 self.assertEqual(result["disposition"], expected)
                 self.assertTrue(result["trigger_reproduced"])
                 self.assertEqual(result["analyst_decision"], "PENDING")
-                self.assertEqual(workbook(case, result), (ROOT / "examples" / (name + ".md")).read_text())
+                self.assertEqual(workbook(case, result), (ROOT / "examples" / (name + ".md")).read_text(encoding="utf-8"))
                 ids = {e["id"] for e in case["events"]}
                 for check in result["trace"]:
                     self.assertTrue(ids.issuperset(check["evidence"]))
